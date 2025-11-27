@@ -6,6 +6,7 @@ import {
 } from '@google-cloud/vertexai';
 import { NextRequest, NextResponse } from 'next/server';
 import path from 'path';
+import fs from 'fs';
 
 type RecommendedProduct = {
   image_url?: string | null;
@@ -134,7 +135,16 @@ export async function POST(request: NextRequest) {
     }
 
     // Set the credentials path
-    const credentialsPath = path.join(process.cwd(), 'app', 'global-hackathon-479205-bdf22a5ee31f.json');
+    const credentialsDir = path.join(process.cwd(), 'app');
+    const files = fs.readdirSync(credentialsDir);
+    const credentialsFile = files.find((file: string) => file.startsWith('global-hackathon') && file.endsWith('.json'));
+    if (!credentialsFile) {
+      return NextResponse.json(
+        { error: 'Google Cloud credentials file not found' },
+        { status: 500 }
+      );
+    }
+    const credentialsPath = path.join(credentialsDir, credentialsFile);
     process.env.GOOGLE_APPLICATION_CREDENTIALS = credentialsPath;
 
     // Initialize Vertex AI with your Cloud project and location

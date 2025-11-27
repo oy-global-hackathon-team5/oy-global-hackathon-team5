@@ -20,8 +20,10 @@ export async function getTrendsKeywords(
       headless: true,
       timeout: 60000 // 브라우저 실행 타임아웃 60초
     });
+
+    // 클립보드 권한을 가진 context 생성
     const context = await browser.newContext({
-      acceptDownloads: true
+      permissions: ['clipboard-read', 'clipboard-write']
     });
     const page = await context.newPage();
 
@@ -75,36 +77,32 @@ export async function getTrendsKeywords(
     // 드롭다운 메뉴 대기
     await page.waitForTimeout(3000);
 
-    console.log('⬇️  Downloading CSV...');
+    console.log('📋 Copying to clipboard...');
 
-    // 'CSV 다운로드' 메뉴 항목 찾기
-    const csvMenuItem = page
-      .locator('[role="menuitem"][aria-label="CSV 다운로드"], [role="menuitem"][aria-label="Download CSV"]')
+    // '클립보드에 복사' 메뉴 항목 찾기 및 클릭 (다국어 대응)
+    const copyMenuItem = page
+      .locator('[role="menuitem"][aria-label="클립보드에 복사"], [role="menuitem"][aria-label="Copy to clipboard"]')
       .last();
 
-    await csvMenuItem.waitFor({ state: 'attached', timeout: 30000 });
+    await copyMenuItem.waitFor({ state: 'attached', timeout: 30000 });
+    await copyMenuItem.click({ force: true });
 
-    // 다운로드 이벤트 설정 및 클릭
-    const downloadPromise = page.waitForEvent('download');
-    await csvMenuItem.click({ force: true });
+    // 클립보드 복사 완료 대기
+    await page.waitForTimeout(2000);
 
-    // 다운로드 완료 대기
-    const download = await downloadPromise;
+    console.log('📋 Reading from clipboard...');
 
-    // CSV 내용을 메모리로 읽기
-    const stream = await download.createReadStream();
-    let csvContent = '';
-
-    for await (const chunk of stream) {
-      csvContent += chunk.toString();
-    }
+    // 클립보드에서 데이터 가져오기
+    const clipboardText = await page.evaluate(() =>
+      navigator.clipboard.readText()
+    );
 
     await browser.close();
 
     console.log('✅ Successfully fetched trends data');
 
-    // CSV 파싱 - 키워드만 추출
-    const keywords = parseCSVToKeywords(csvContent);
+    // 텍스트 파싱 - 키워드만 추출
+    const keywords = parseTextToKeywords(clipboardText);
     console.log(`📊 Found ${keywords.length} keywords`);
 
     return keywords;
@@ -116,14 +114,15 @@ export async function getTrendsKeywords(
 }
 
 /**
- * CSV 내용을 파싱하여 키워드 배열로 변환
- * CSV 형식: "Trends","Search volume","Started","Trend breakdown"
+ * 클립보드 텍스트를 파싱하여 키워드 배열로 변환
+ * 텍스트 형식: 탭으로 구분된 TSV (Tab-Separated Values)
+ * 형식: "Trends\tSearch volume\tStarted\tTrend breakdown"
  *
- * @param csvContent - CSV 문자열
+ * @param clipboardText - 클립보드에서 가져온 텍스트
  * @returns 키워드 문자열 배열 (상위 10개)
  */
-function parseCSVToKeywords(csvContent: string): string[] {
-  const lines = csvContent.split('\n');
+function parseTextToKeywords(clipboardText: string): string[] {
+  const lines = clipboardText.split('\n');
   const keywords: string[] = [];
 
   // 첫 줄은 헤더이므로 스킵하고, 두 번째 줄부터 파싱
@@ -131,9 +130,9 @@ function parseCSVToKeywords(csvContent: string): string[] {
     const line = lines[i].trim();
     if (!line) continue;
 
-    // CSV 파싱: 쉼표로 구분된 값 처리
+    // 탭으로 구분된 값 파싱 (TSV 형식)
     // 첫 번째 컬럼(Trends)만 추출
-    const columns = parseCSVLine(line);
+    const columns = line.split('\t');
     if (columns.length > 0 && columns[0]) {
       const keyword = columns[0].trim();
       if (keyword) {
@@ -144,39 +143,4 @@ function parseCSVToKeywords(csvContent: string): string[] {
 
   // 상위 10개만 반환
   return keywords.slice(0, 10);
-}
-
-/**
- * CSV 한 줄을 파싱하여 컬럼 배열로 변환
- * 따옴표로 감싸진 값과 쉼표 처리
- *
- * @param line - CSV 한 줄
- * @returns 컬럼 값 배열
- */
-function parseCSVLine(line: string): string[] {
-  const columns: string[] = [];
-  let currentColumn = '';
-  let insideQuotes = false;
-
-  for (let i = 0; i < line.length; i++) {
-    const char = line[i];
-
-    if (char === '"') {
-      // 따옴표 토글
-      insideQuotes = !insideQuotes;
-    } else if (char === ',' && !insideQuotes) {
-      // 따옴표 밖의 쉼표는 구분자
-      columns.push(currentColumn);
-      currentColumn = '';
-    } else {
-      currentColumn += char;
-    }
-  }
-
-  // 마지막 컬럼 추가
-  if (currentColumn) {
-    columns.push(currentColumn);
-  }
-
-  return columns;
 }

@@ -1,3 +1,6 @@
+"use client"
+
+import { useState } from "react"
 import { Heart, Star } from "lucide-react"
 
 interface ProductCardProps {
@@ -14,15 +17,28 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
+  const [imageError, setImageError] = useState(false)
+
   return (
     <div className="bg-white rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
       {/* Image Container */}
-      <div className="relative aspect-square bg-gray-100 overflow-hidden group">
-        <img
-          src={product.image || "/placeholder.svg"}
-          alt={product.name}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-        />
+      <div className="relative aspect-square bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden group">
+        {!imageError && product.image ? (
+          <img
+            src={product.image}
+            alt={product.name}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            onError={() => setImageError(true)}
+            loading="lazy"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
+            <div className="text-center px-4">
+              <p className="text-xs text-gray-400 font-light">{product.brand}</p>
+              <p className="text-xs text-gray-500 mt-1">Image unavailable</p>
+            </div>
+          </div>
+        )}
 
         {/* Badge */}
         {product.badge && (

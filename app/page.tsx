@@ -7,8 +7,17 @@ import HeroBanner from "@/components/hero-banner"
 import ProductGrid from "@/components/product-grid"
 import Header from "@/components/header"
 
+// 국가 코드와 표시명 매핑
+const countryMap: Record<string, string> = {
+  US: "United States",
+  CA: "Canada",
+  GB: "United Kingdom",
+  AU: "Australia",
+  SG: "Singapore",
+}
+
 export default function Home() {
-  const [selectedCountry, setSelectedCountry] = useState("USA")
+  const [selectedCountry, setSelectedCountry] = useState("US")
 
   return (
     <div className="min-h-screen bg-white">
@@ -22,7 +31,7 @@ export default function Home() {
           <div>
             <span className="text-xs font-light text-stone-500 tracking-widest uppercase">CURATED FOR YOU</span>
             <h2 className="text-3xl font-light text-stone-900 mt-2 tracking-tight">
-              Best Sellers in {selectedCountry}
+              Best Sellers in {countryMap[selectedCountry] || selectedCountry}
             </h2>
           </div>
           <a

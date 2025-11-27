@@ -41,7 +41,7 @@ export default function Home() {
       <div className="max-w-7xl mx-auto px-4 py-16">
         <div className="flex justify-between items-end mb-12">
           <div>
-            <span className="text-xs font-light text-stone-500 tracking-widest uppercase">EDITOR'S SELECTION</span>
+            <span className="text-xs font-light text-stone-500 tracking-widest uppercase">EDITOR&apos;S SELECTION</span>
             <h2 className="text-3xl font-light text-stone-900 mt-2 tracking-tight">Our Picks</h2>
           </div>
           <a

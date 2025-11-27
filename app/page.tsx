@@ -6,10 +6,10 @@ import CountrySelector from "@/components/country-selector"
 import HeroBanner from "@/components/hero-banner"
 import ProductGrid from "@/components/product-grid"
 import Header from "@/components/header"
-import { getCountryNameEn } from "@/lib/constants"
+import { getCountryNameEn, type CountryCode } from "@/lib/constants"
 
 export default function Home() {
-  const [selectedCountry, setSelectedCountry] = useState("US")
+  const [selectedCountry, setSelectedCountry] = useState<CountryCode>("US")
 
   return (
     <div className="min-h-screen bg-white">

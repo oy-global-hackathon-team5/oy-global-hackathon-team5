@@ -4,8 +4,9 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { getPromotionsByCountry, type Promotion } from "@/lib/actions/promotions"
+import type { CountryCode } from "@/lib/constants"
 
-export default function HeroBanner({ country }: { country: string }) {
+export default function HeroBanner({ country }: { country: CountryCode }) {
   const [promotions, setPromotions] = useState<Promotion[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
   const [loading, setLoading] = useState(true)

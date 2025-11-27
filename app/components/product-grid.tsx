@@ -1,7 +1,8 @@
 import ProductCard from "./product-card"
+import type { CountryCode } from "@/lib/constants"
 
 interface ProductGridProps {
-  country: string
+  country: CountryCode
   variant?: "default" | "picks"
 }
 

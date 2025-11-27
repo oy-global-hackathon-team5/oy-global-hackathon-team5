@@ -1,11 +1,11 @@
 "use client"
 
 import { ChevronDown } from "lucide-react"
-import { COUNTRIES } from "@/lib/constants"
+import { COUNTRIES, type CountryCode } from "@/lib/constants"
 
 interface CountrySelectorProps {
-  selectedCountry: string
-  onCountryChange: (country: string) => void
+  selectedCountry: CountryCode
+  onCountryChange: (country: CountryCode) => void
 }
 
 export default function CountrySelector({ selectedCountry, onCountryChange }: CountrySelectorProps) {
@@ -16,7 +16,7 @@ export default function CountrySelector({ selectedCountry, onCountryChange }: Co
       <div className="relative">
         <select
           value={selectedCountry}
-          onChange={(e) => onCountryChange(e.target.value)}
+          onChange={(e) => onCountryChange(e.target.value as CountryCode)}
           className="appearance-none px-4 py-2 pr-8 border border-gray-300 rounded-lg text-sm font-medium bg-white cursor-pointer hover:border-gray-400"
         >
           {COUNTRIES.map((country) => (

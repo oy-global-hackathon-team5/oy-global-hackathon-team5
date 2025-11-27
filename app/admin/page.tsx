@@ -5,9 +5,10 @@ import Header from "@/components/header"
 import CountrySelector from "@/components/country-selector"
 import PromotionList from "@/components/admin/promotion-list"
 import GenerateDialog from "@/components/admin/generate-dialog"
+import type { CountryCode } from "@/lib/constants"
 
 export default function AdminPage() {
-  const [selectedCountry, setSelectedCountry] = useState("US")
+  const [selectedCountry, setSelectedCountry] = useState<CountryCode>("US")
   const [isGenerateOpen, setIsGenerateOpen] = useState(false)
   const [refreshKey, setRefreshKey] = useState(0)
 

@@ -1,6 +1,7 @@
 'use server'
 
 import { supabase } from '@/lib/supabase'
+import type { CountryCode } from '@/lib/constants'
 
 export interface Promotion {
   id: number
@@ -30,7 +31,7 @@ export interface Promotion {
 /**
  * 국가 코드로 최신 프로모션 조회 (히어로 배너용)
  */
-export async function getPromotionByCountry(countryCode: string): Promise<Promotion | null> {
+export async function getPromotionByCountry(countryCode: CountryCode): Promise<Promotion | null> {
   try {
     const { data, error } = await supabase
       .from('promotions')
@@ -55,7 +56,7 @@ export async function getPromotionByCountry(countryCode: string): Promise<Promot
 /**
  * 국가 코드로 모든 프로모션 조회 (히어로 배너 슬라이더용)
  */
-export async function getPromotionsByCountry(countryCode: string): Promise<Promotion[]> {
+export async function getPromotionsByCountry(countryCode: CountryCode): Promise<Promotion[]> {
   try {
     const { data, error } = await supabase
       .from('promotions')

@@ -1,0 +1,25 @@
+- id
+  - 프로모션 고유 ID
+- plndp_no
+  - 기획전 번호
+- country_code
+  - 국가 코드 (ISO 3166-1 alpha-2 표준 코드)
+- title
+  - 기획전 제목
+- description
+  - 기획전 설명
+- theme
+  - 기획전 테마 (GenAI가 반영한 테마 기록, optional)
+- hero_banner_image_url
+  - 히어로 배너에 표시될 이미지 URL (GenAI 생성)
+- detail_image_urls
+  - 기획전 상세 페이지에 사용될 이미지 URL 배열 (GenAI 생성)
+- products
+  - 기획전에 포함된 상품 데이터 (JSON 형태)
+- trend_keywords
+  - 해당 기획전의 기반이 된 트렌드 키워드 배열
+- created_at
+  - 생성 일시
+- updated_at
+  - 수정 일시
+

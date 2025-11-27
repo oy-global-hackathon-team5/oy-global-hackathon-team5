@@ -6,9 +6,10 @@ import CountrySelector from "@/components/country-selector"
 import HeroBanner from "@/components/hero-banner"
 import ProductGrid from "@/components/product-grid"
 import Header from "@/components/header"
+import { getCountryNameEn } from "@/lib/constants"
 
 export default function Home() {
-  const [selectedCountry, setSelectedCountry] = useState("USA")
+  const [selectedCountry, setSelectedCountry] = useState("US")
 
   return (
     <div className="min-h-screen bg-white">
@@ -22,7 +23,7 @@ export default function Home() {
           <div>
             <span className="text-xs font-light text-stone-500 tracking-widest uppercase">CURATED FOR YOU</span>
             <h2 className="text-3xl font-light text-stone-900 mt-2 tracking-tight">
-              Best Sellers in {selectedCountry}
+              Best Sellers in {getCountryNameEn(selectedCountry)}
             </h2>
           </div>
           <a

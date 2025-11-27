@@ -6,15 +6,7 @@ import CountrySelector from "@/components/country-selector"
 import HeroBanner from "@/components/hero-banner"
 import ProductGrid from "@/components/product-grid"
 import Header from "@/components/header"
-
-// 국가 코드와 표시명 매핑
-const countryMap: Record<string, string> = {
-  US: "United States",
-  CA: "Canada",
-  GB: "United Kingdom",
-  AU: "Australia",
-  SG: "Singapore",
-}
+import { getCountryNameEn } from "@/lib/constants"
 
 export default function Home() {
   const [selectedCountry, setSelectedCountry] = useState("US")
@@ -31,7 +23,7 @@ export default function Home() {
           <div>
             <span className="text-xs font-light text-stone-500 tracking-widest uppercase">CURATED FOR YOU</span>
             <h2 className="text-3xl font-light text-stone-900 mt-2 tracking-tight">
-              Best Sellers in {countryMap[selectedCountry] || selectedCountry}
+              Best Sellers in {getCountryNameEn(selectedCountry)}
             </h2>
           </div>
           <a

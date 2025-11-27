@@ -1,20 +1,12 @@
 "use client"
 
 import { ChevronDown } from "lucide-react"
+import { COUNTRIES } from "@/lib/constants"
 
 interface CountrySelectorProps {
   selectedCountry: string
   onCountryChange: (country: string) => void
 }
-
-// ISO 3166-1 alpha-2 표준 국가 코드와 표시명 매핑
-const countries = [
-  { code: "US", name: "United States" },
-  { code: "CA", name: "Canada" },
-  { code: "GB", name: "United Kingdom" },
-  { code: "AU", name: "Australia" },
-  { code: "SG", name: "Singapore" },
-]
 
 export default function CountrySelector({ selectedCountry, onCountryChange }: CountrySelectorProps) {
 
@@ -27,9 +19,9 @@ export default function CountrySelector({ selectedCountry, onCountryChange }: Co
           onChange={(e) => onCountryChange(e.target.value)}
           className="appearance-none px-4 py-2 pr-8 border border-gray-300 rounded-lg text-sm font-medium bg-white cursor-pointer hover:border-gray-400"
         >
-          {countries.map((country) => (
+          {COUNTRIES.map((country) => (
             <option key={country.code} value={country.code}>
-              {country.name}
+              {country.nameEn}
             </option>
           ))}
         </select>

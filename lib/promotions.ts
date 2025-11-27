@@ -1,9 +1,10 @@
 import { supabase } from "./supabase"
+import type { CountryCode, CategoryId } from "./constants"
 
 // 프로모션 데이터 타입 정의
 export interface PromotionData {
   plndp_no: string // 기획전 번호
-  country_code: string // 국가 코드 (ISO 3166-1 alpha-2)
+  country_code: CountryCode // 국가 코드 (ISO 3166-1 alpha-2)
   title: string // 기획전 제목
   description: string // 기획전 설명
   theme?: string // 기획전 테마 (optional)
@@ -22,7 +23,7 @@ export interface Promotion extends PromotionData {
 /**
  * 국가별 프로모션 목록 조회
  */
-export async function getPromotionsByCountry(countryCode: string): Promise<Promotion[]> {
+export async function getPromotionsByCountry(countryCode: CountryCode): Promise<Promotion[]> {
   const { data, error } = await supabase
     .from("promotions")
     .select("*")
@@ -95,7 +96,7 @@ export async function deletePromotion(id: string): Promise<void> {
  * 기획전 번호 자동 생성 함수
  * 형식: PLNDP-{국가코드}-{타임스탬프}
  */
-export function generatePlndpNo(countryCode: string): string {
+export function generatePlndpNo(countryCode: CountryCode): string {
   const timestamp = Date.now()
   return `PLNDP-${countryCode}-${timestamp}`
 }
@@ -105,8 +106,8 @@ export function generatePlndpNo(countryCode: string): string {
  * (generate-promotion API에서 사용)
  */
 export async function saveGeneratedPromotion(params: {
-  countryCode: string
-  category: string
+  countryCode: CountryCode
+  category: CategoryId
   title: string
   description: string
   theme?: string

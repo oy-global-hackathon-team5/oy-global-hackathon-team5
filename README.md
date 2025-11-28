@@ -60,6 +60,9 @@ Google Trends의 실시간 데이터를 활용하여 **검색 키워드 수집 �
 - 국가별 맞춤형 콘텐츠 제공
 
 ## 📸 Demo
+|JP|US|
+|--|--|
+| <img width="1024" height="559" alt="image" src="https://github.com/user-attachments/assets/dc60391c-bad4-42b9-b3dc-9d7cfb996f82" /> | <img width="1024" height="1024" alt="image" src="https://github.com/user-attachments/assets/ba13d2cd-b527-40a1-88c7-c101bd572cee" /> |
 
 <img width="1301" height="1254" alt="Promotion Generation Example" src="https://github.com/user-attachments/assets/b8ba1c75-4a7c-4138-9244-7395bc27258f" />
 
